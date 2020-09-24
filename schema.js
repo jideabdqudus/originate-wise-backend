@@ -41,14 +41,14 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .get("http://localhost:3000/plans/" + args.id)
+          .get("http://localhost:6000/plans/" + args.id)
           .then((res) => res.data);
       },
     },
     plans: {
       type: new GraphQLList(PlansType),
       resolve(parentValue, args) {
-        return axios.get("http://localhost:3000/plans").then((res) => res.data);
+        return axios.get("http://localhost:6000/plans").then((res) => res.data);
       },
     },
     user: {
@@ -58,7 +58,7 @@ const RootQuery = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .get("http://localhost:3000/users/" + args.id)
+          .get("http://localhost:6000/users/" + args.id)
           .then((res) => res.data);
       },
     },
@@ -66,7 +66,7 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(UserType),
       resolve(parentValue, args) {
         return axios
-          .get("http://localhost:3000/users/")
+          .get("http://localhost:6000/users/")
           .then((res) => res.data);
       },
     },
@@ -87,7 +87,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .post("http://localhost:3000/plans", {
+          .post("http://localhost:6000/plans", {
             title: args.title,
             amount: args.amount,
             date: args.date,
@@ -102,7 +102,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .delete("http://localhost:3000/plans/" + args.id)
+          .delete("http://localhost:6000/plans/" + args.id)
           .then((res) => res.data);
       },
     },
@@ -116,7 +116,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .patch("http://localhost:3000/plans/" + args.id, {
+          .patch("http://localhost:6000/plans/" + args.id, {
             title: args.title,
             amount: args.amount,
             date: args.date,
@@ -133,7 +133,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .post("http://localhost:3000/users", {
+          .post("http://localhost:6000/users", {
             firstName: args.firstName,
             lastName: args.lastName,
             email: args.email,
@@ -148,7 +148,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .delete("http://localhost:3000/users/" + args.id)
+          .delete("http://localhost:6000/users/" + args.id)
           .then((res) => res.data);
       },
     },
@@ -162,7 +162,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return axios
-          .patch("http://localhost:3000/users/" + args.id, {
+          .patch("http://localhost:6000/users/" + args.id, {
             firstName: args.firstName,
             lastName: args.lastName,
             email: args.email,
