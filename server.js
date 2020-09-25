@@ -1,15 +1,12 @@
 const express = require("express");
-const { graphqlHTTP } = require("express-graphql");
-const schema = require("./schema.js");
-
 const app = express();
 
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    graphiql: true,
-  })
-);
+app.get("/", (req, res) => res.json({ msg: "Welcome to the API..." }));
 
-app.listen(5000, () => console.log("Server Running on 5000"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/plans", require("./routes/plans"));
+
+const PORT = process.env.PORT || 6000;
+
+app.listen(PORT, () => console.log(`Server started running on port ${PORT}`));
