@@ -63,15 +63,64 @@ router.post(
 //@route PUT api/plans/:id
 //@desc  Update plan
 //@access  Private
-router.put("/:id", (req, res) => {
-  res.send("Update plans");
+router.put("/:id", auth, async (req, res) => {
+  const { plan, amount, desc, date } = req.body;
+
+  //Build Plan Object
+
+  const planFields = {};
+  if (plan) planFields.plan = plan;
+  if (amount) planFields.amount = amount;
+  if (desc) planFields.desc = desc;
+  if (date) planFields.date = date;
+
+  try {
+    let plan = await Plan.findById(req.params.id);
+
+    if (!plan) return res.status(404).json({ msg: "Plan not found" });
+
+    //Make sure user owns plan
+
+    if (plan.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    plan = await Plan.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: planFields,
+      },
+      { new: true }
+    );
+    res.json(plan);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 //@route DELETE api/plans/:id
 //@desc  Delete plan
 //@access  Private
-router.delete("/:id", (req, res) => {
-  res.send("Delete plans");
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    let plan = await Plan.findById(req.params.id);
+
+    if (!plan) return res.status(404).json({ msg: "Plan not found" });
+
+    //Make sure user owns plan
+
+    if (plan.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    await Plan.findByIdAndRemove(req.params.id);
+
+    res.json({ msg: "Plan Removed" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;
