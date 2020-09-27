@@ -53,16 +53,21 @@ router.post(
           id: user.id,
         },
       };
-      jwt.sign(payload, config.get("jwtSecret"), {
-        expiresIn: 3600,
-      }, (err, token)=>{
-        if (err) throw err;
-        res.json({token})
-      });
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        {
+          expiresIn: 3600,
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send("500 Error");
-    } 
+    }
   }
 );
 
